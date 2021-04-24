@@ -1,0 +1,70 @@
+@page "/orderslist"
+@inject HttpClient http
+@inject IModalService modal
+
+@using OrderFlowStudio.Frontend.Data
+
+
+<h1>Orders list</h1>
+
+<button class = "btn btn-dark" @onclick="GetOrders">Get orders!</button>
+
+<div class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
+<table class="table table-striped border">
+    <thread>
+
+    </thread>
+    <tbody>
+        @foreach (var order in @orders)
+        {
+            <tr>
+                <td><a href="@($"/orderraport/{@order.raportDto.Id}")" class="nav-link">@order.OrderNumber</a></td>
+                <td>@order.Quantity</td>
+                <td>@order.productDto.PartNumber</td>
+                <td>@order.productDto.ProductDescription</td>    
+                 @if(order.raportDto.isStarted == false)
+                {
+                    <td><span class="badge badge-dark">Not started</span></td>
+                }     
+                @if(order.raportDto.isStarted == true && order.raportDto.isProcessed == false)
+                {
+                    <td><span class="badge badge-primary">Started</span></td>
+                }  
+                @if(order.raportDto.isProcessed == true && order.raportDto.isProcessOK == false)
+                {
+                    <td><span class="badge badge-danger">Correction</span></td>
+                }   
+                @if(order.raportDto.isOrderFinished == true)
+                {
+                    <td><span class="badge badge-success">Finished</span></td>
+                }
+                else
+                {
+                    @if(order.raportDto.isProcessOK == true && order.raportDto.isOrderFinished == false)
+                    {
+                        <td><span class="badge badge-light">Almost finished</span></td>
+                    }
+                }   
+                <td><button class = "btn btn-dark" @onclick="@(() => Modal.Show<OrderStatusComponent>("Order Status"))">Details</button></td>  
+            </tr>
+
+        }
+    </tbody>
+</table>
+</div>
+
+
+
+
+
+@code{
+    List<Order> orders = new List<Order>();
+
+    private async Task GetOrders()
+    {
+        orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order");
+    }
+
+    // MODAL
+    [CascadingParameter] public IModalService Modal { get; set; }
+}
