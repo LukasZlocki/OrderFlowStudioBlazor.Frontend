@@ -1,0 +1,88 @@
+@page "/orderlistweb"
+@inject HttpClient http
+@inject IModalService modal
+
+@using OrderFlowStudio.Frontend.Data
+
+@inject NavigationManager Navigate;
+
+
+<h1>Orders list web</h1> 
+
+
+<div  class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
+<table class="table table-striped border table-hover">   
+        <tr>
+            <th>Order nb</th>
+            <th>Quantity</th>
+            <th>Part nb</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Details</th>
+        </tr> 
+    <tbody>
+        @foreach (var order in @orders)
+        {
+        <tr>
+            <td>@order.OrderNumber</td>
+            <td>@order.Quantity</td>
+            <td>@order.productDto.PartNumber</td>
+            <td>@order.productDto.ProductDescription</td>
+
+
+            @if (order.raportDto.isStarted == false)
+            {
+                <td><span class="badge badge-dark">Not started</span></td>
+            }
+            @if (order.raportDto.isStarted == true && order.raportDto.isProcessed == false)
+            {
+                <td><span class="badge badge-primary">Started</span></td>
+            }
+            @if (order.raportDto.isProcessed == true && order.raportDto.isProcessOK == false)
+            {
+                <td><span class="badge badge-danger">Correction</span></td>
+            }
+            @if (order.raportDto.isOrderFinished == true)
+            {
+                <td><span class="badge badge-success">Finished</span></td>
+            }
+            else
+            {
+                @if (order.raportDto.isProcessOK == true && order.raportDto.isOrderFinished == false)
+                {
+                    <td><span class="badge badge-light">Almost finished</span></td>
+                }
+            }
+       
+            <td><button class="btn btn-dark" @onclick="@(() => RedirectToWeb(order.raportDto.Id))">Details</button></td>
+        </tr>
+        }
+    </tbody>
+</table>
+</div>
+
+
+
+@code{
+    List<Order> orders = new List<Order>();
+
+    private async Task GetOrders()
+    {
+        orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order");
+    }
+
+    void RedirectToWeb(int RaportId)
+    {
+        Navigate.NavigateTo("/orderstatus/" + RaportId, true);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+       orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order/");
+    }
+
+
+    
+
+
+}

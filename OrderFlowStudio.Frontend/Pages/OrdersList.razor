@@ -9,16 +9,21 @@
 
 <button class = "btn btn-dark" @onclick="GetOrders">Get orders!</button>
 
-<div class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
-<table class="table table-striped border">
-    <thread>
-
-    </thread>
+<div  class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
+<table style="width:50%" class="table table-striped border">
+        <tr>
+            <th>Order Nb</th>
+            <th>Quantity</th>
+            <th>Part Nb</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Details</th>
+        </tr>
     <tbody>
         @foreach (var order in @orders)
         {
             <tr>
-                <td><a href="@($"/orderraport/{@order.raportDto.Id}")" class="nav-link">@order.OrderNumber</a></td>
+                <td>@order.OrderNumber</td>
                 <td>@order.Quantity</td>
                 <td>@order.productDto.PartNumber</td>
                 <td>@order.productDto.ProductDescription</td>    
@@ -45,15 +50,13 @@
                         <td><span class="badge badge-light">Almost finished</span></td>
                     }
                 }   
-                <td><button class = "btn btn-dark" @onclick="@(() => Modal.Show<OrderStatusComponent>("Order Status"))">Details</button></td>  
+                <td><button class = "btn btn-dark" @onclick="@(() => ShowOrderStatusComponent(order.raportDto.Id))">Details</button></td>
             </tr>
 
         }
     </tbody>
 </table>
 </div>
-
-
 
 
 
@@ -65,6 +68,21 @@
         orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order");
     }
 
-    // MODAL
+    // BLAZORED MODAL
     [CascadingParameter] public IModalService Modal { get; set; }
+
+    void ShowOrderStatusComponent(int raportId)
+    {
+        var parameter = new ModalParameters();
+        parameter.Add(nameof(OrderStatusComponent.RaportId), raportId);
+
+        Modal.Show<OrderStatusComponent>("Order Status", parameter);
+    }
+
+
+
+    // LAZY WEB LOADING
+    
+
+
 }
