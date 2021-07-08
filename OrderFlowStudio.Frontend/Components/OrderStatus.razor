@@ -46,7 +46,7 @@
         </tr>
         <tr>
             <td>Process OK</td>
-            @if (raport.isProcessOK == false)
+            @if (raport.isProcessOK == false && raport.isProcessed == false)
             {
                 <td><span class="badge badge-dark">Not started</span></td>
             }
@@ -54,14 +54,22 @@
             {
                 <td><span class="badge badge-success">Finished</span></td>
             }
+            @if (raport.isProcessOK == false && raport.isProcessed == true)
+            {
+                <td><span class="badge badge-danger">Not OK</span></td>
+            }
         </tr>
         <tr>
             <td>Correction started</td>
-            @if (raport.isCorrectionStarted == false)
+            @if (raport.isCorrectionStarted == false && raport.isCorrectionFinished == false)
             {
                 <td><span class="badge badge-dark">Not started</span></td>
             }
-            @if (raport.isCorrectionStarted == true)
+            @if (raport.isCorrectionStarted == true && raport.isCorrectionFinished == false)
+            {
+                <td><span class="badge badge-primary">Correction in progress</span></td>
+            }
+            @if (raport.isCorrectionStarted == true && raport.isCorrectionFinished == true)
             {
                 <td><span class="badge badge-success">Finished</span></td>
             }
