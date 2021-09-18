@@ -30,7 +30,6 @@ namespace OrderFlowStudio.Frontend
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddHttpClient();
             services.AddBlazoredModal();
         }
