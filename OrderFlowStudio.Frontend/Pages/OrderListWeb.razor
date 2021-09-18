@@ -9,6 +9,11 @@
 
 <h1>Orders list web</h1> 
 
+<!-- Search form -->
+<div class="form-inline">
+    <input class="form-control" type="text" placeholder="Order nb" aria-label="Search" @bind="orderNb" >
+    <button class = "btn btn-dark" @onclick="GetOrderIdByOrderNb">Search</button>
+</div>
 
 <div  class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
 <table class="table table-striped border table-hover">   
@@ -54,7 +59,7 @@
                 }
             }
        
-            <td><button class="btn btn-dark" @onclick="@(() => RedirectToWeb(order.raportDto.Id))">Details</button></td>
+            <td><button class="btn btn-dark" @onclick="@(() => RedirectToWebWithRaport(order.raportDto.Id))">Details</button></td>
         </tr>
         }
     </tbody>
@@ -65,24 +70,34 @@
 
 @code{
     List<Order> orders = new List<Order>();
+    private string orderNb = string.Empty;
+
+    int orderRaportId;
+
 
     private async Task GetOrders()
     {
         orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order");
     }
 
-    void RedirectToWeb(int RaportId)
+    void RedirectToWebWithRaport(int RaportId)
     {
         Navigate.NavigateTo("/orderstatus/" + RaportId, true);
     }
 
     protected override async Task OnInitializedAsync()
     {
-       orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order/");
+        orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order/");
+    }
+
+    private async Task GetOrderIdByOrderNb()
+    {
+        orderRaportId = await http.GetJsonAsync<int>("http://localhost:6001/api/order/byordernumber/" + orderNb);
+        Navigate.NavigateTo("/orderstatus/" + orderRaportId, true);
     }
 
 
-    
+
 
 
 }
