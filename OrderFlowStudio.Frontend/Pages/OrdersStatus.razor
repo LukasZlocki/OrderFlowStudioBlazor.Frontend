@@ -7,8 +7,6 @@
 
 <h1>Orders list</h1>
 
-<!--
-
 <button class="btn btn-dark" @onclick="GetOrders">Get orders!</button>
 
 <div class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
@@ -29,51 +27,47 @@
                     <td>@order.Quantity</td>
                     <td>@order.productDto.PartNumber</td>
                     <td>@order.productDto.ProductDescription</td>
-                    @if (order.raportDto.isStarted == false)
-                    {
-                        <td><span class="badge badge-dark">Not in area</span></td>
-                    }
-                    @if (order.raportDto.isStarted == true && order.raportDto.isMasked == false)
-                    {
-                        <td><span class="badge badge-primary">Waiting</span></td>
-                    }
-                    @if (order.raportDto.isStarted == true && order.raportDto.isMasked == true && order.raportDto.isProcessed == false)
-                    {
-                        <td><span class="badge badge-primary">Masking</span></td>
-                    }
-                    @if (order.raportDto.isProcessed == true && order.raportDto.isProcessOK == false && order.raportDto.isCorrectionStarted == false)
-                    {
-                        <td><span class="badge badge-primary">In process</span></td>
-                    }
-                    @if (order.raportDto.isProcessed == true && order.raportDto.isProcessOK == false && order.raportDto.isCorrectionStarted == true && order.raportDto.isCorrectionFinished == false)
-                    {
-                        <td><span class="badge badge-danger">Correction</span></td>
-                    }
-                    @if (order.raportDto.isProcessed == true && order.raportDto.isProcessOK == true && order.raportDto.isCorrectionStarted == true && order.raportDto.isCorrectionFinished == false && order.raportDto.isOrderFinished)
-                    {
-                        <td><span class="badge badge-danger">Correction finished</span></td>
-                    }
 
-                    @if (order.raportDto.isOrderFinished == true)
-                    {
-                        <td><span class="badge badge-success">Finished</span></td>
-                    }
-                    else
-                    {
-                        @if (order.raportDto.isProcessOK == true && order.raportDto.isCorrectionStarted == false)
-                        {
-                            <td><span class="badge badge-light">Almost finished</span></td>
-                        }
-                    }
-                    <td><button class="btn btn-dark" @onclick="@(() => ShowOrderStatusComponent(order.raportDto.Id))">Details</button></td>
-                </tr>
+            @if (order.raportDto.statusDto.StatusCode == 10)
+            {
+                <td><span class="badge badge-dark">Not in area</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 15)
+            {
+                <td><span class="badge badge-dark">Not started</span></td>
+            }
 
+            @if (order.raportDto.statusDto.StatusCode == 20)
+            {
+                <td><span class="badge badge-primary">Masking</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 30)
+            {
+                <td><span class="badge badge-primary">Processing</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 40)
+            {
+                <td><span class="badge badge-danger">Correction</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 50)
+            {
+                <td><span class="badge badge-danger">Correction finished</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 60)
+            {
+                <td><span class="badge badge-success">Almost done</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 70)
+            {
+                <td><span class="badge badge-success">Finished</span></td>
+            }
+            <td><button class="btn btn-dark" @onclick="@(() => ShowOrderStatusComponent(order.raportDto.Id))">Details</button></td>
+            </tr>
             }
         </tbody>
     </table>
 </div>
 
--->
 
 @code {
     List<Order> orders = new List<Order>();

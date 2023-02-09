@@ -37,30 +37,40 @@
             <td>@order.productDto.ProductDescription</td>
 
 
-            @if (order.raportDto.isStarted == false)
+            @if (order.raportDto.statusDto.StatusCode == 10)
+            {
+                <td><span class="badge badge-dark">Not in area</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 15)
             {
                 <td><span class="badge badge-dark">Not started</span></td>
             }
-            @if (order.raportDto.isStarted == true && order.raportDto.isProcessed == false)
+
+            @if (order.raportDto.statusDto.StatusCode == 20)
             {
-                <td><span class="badge badge-primary">Started</span></td>
+                <td><span class="badge badge-primary">Masking</span></td>
             }
-            @if (order.raportDto.isProcessed == true && order.raportDto.isProcessOK == false)
+            @if (order.raportDto.statusDto.StatusCode == 30)
+            {
+                <td><span class="badge badge-primary">Processing</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 40)
             {
                 <td><span class="badge badge-danger">Correction</span></td>
             }
-            @if (order.raportDto.isOrderFinished == true)
+            @if (order.raportDto.statusDto.StatusCode == 50)
+            {
+                <td><span class="badge badge-danger">Correction finished</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 60)
+            {
+                <td><span class="badge badge-success">Almost done</span></td>
+            }
+            @if (order.raportDto.statusDto.StatusCode == 70)
             {
                 <td><span class="badge badge-success">Finished</span></td>
             }
-            else
-            {
-                @if (order.raportDto.isProcessOK == true && order.raportDto.isOrderFinished == false)
-                {
-                    <td><span class="badge badge-light">Almost finished</span></td>
-                }
-            }
-       
+                
             <td><button class="btn btn-dark" @onclick="@(() => RedirectToWebWithRaport(order.raportDto.Id))">Details</button></td>
         </tr>
         }
@@ -97,9 +107,6 @@
         orderRaportId = await http.GetJsonAsync<int>("http://localhost:6001/api/order/byordernumber/" + orderNb);
         Navigate.NavigateTo("/orderstatus/" + orderRaportId, true);
     }
-
-
-
 
 
 }
