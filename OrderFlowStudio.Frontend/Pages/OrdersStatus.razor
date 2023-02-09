@@ -7,10 +7,8 @@
 
 <h1>Orders list</h1>
 
-<button class="btn btn-dark" @onclick="GetOrders">Get orders!</button>
-
 <div class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
-    <table style="width:50%" class="table table-striped border">
+    <table class="table table-striped border table-hover">
         <tr>
             <th>Order Nb</th>
             <th>Quantity</th>
@@ -72,11 +70,6 @@
 @code {
     List<Order> orders = new List<Order>();
 
-    private async Task GetOrders()
-    {
-        orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order");
-    }
-
     // BLAZORED MODAL
     [CascadingParameter] public IModalService Modal { get; set; }
 
@@ -88,7 +81,10 @@
         Modal.Show<OrderStatusComponent>("Order Status", parameter);
     }
 
-
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order/");
+    }
 
     // LAZY WEB LOADING
 
