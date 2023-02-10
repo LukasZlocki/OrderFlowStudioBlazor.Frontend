@@ -70,7 +70,7 @@
                 <td><span class="badge badge-success">Finished</span></td>
             }
                 
-            <td><button class="btn btn-dark" @onclick="@(() => RedirectToWebWithRaport(order.raportDto.Id))">Details</button></td>
+            <td><button class="btn btn-dark" @onclick="@(() => RedirectToWebWithRaport(order.Id))">Details</button></td>
         </tr>
         }
     </tbody>
@@ -91,9 +91,9 @@
         orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order");
     }
 
-    void RedirectToWebWithRaport(int RaportId)
+    void RedirectToWebWithRaport(int OrderId)
     {
-        Navigate.NavigateTo("/orderstatus/" + RaportId, true);
+        Navigate.NavigateTo("/fullstatusweb/" + OrderId, true);
     }
 
     protected override async Task OnInitializedAsync()
