@@ -24,7 +24,7 @@
 
     private async Task GetOrderIdByOrderNb()
     {
-        orderRaportId = await http.GetJsonAsync<int>("http://localhost:6001/api/order/byordernumber/" + orderNb);
-        Navigate.NavigateTo("/orderstatus/" + orderRaportId, true);
+        orderRaportId = await http.GetJsonAsync<int>("http://localhost:6001/api/order/" + orderNb);
+        Navigate.NavigateTo("/fullstatus/" + orderId, true);
     }
 }
