@@ -7,17 +7,29 @@
 <h1>Adding order</h1>
 
 <!-- Add form -->
-<div class="form-inline">
-    <input class="form-control" type="text" placeholder="Order Nb:" aria-label="Search" @bind="order.OrderNumber" >
-    <input class="form-control" type="text" placeholder="Quantity:" aria-label="Search" @bind="order.Quantity" >
-    <input class="form-control" type="text" placeholder="Material Nb:" aria-label="Search" @bind="order.productDto.PartNumber" >
-    <button class = "btn btn-dark" @onclick="CreateOrder">Search</button>
+<div class="container">
+<div class="row align-items-center">
+    <div class="col-md-auto">
+        <label>Order number:</label> <br>
+        <label>Quantity:</label> <br>
+        <label>Part number:</label> <br>
+    </div>
+    <div class="col-sm">
+        <input class="form-control" type="text" placeholder="Order Nb:" aria-label="Search" @bind="ordernb">
+        <input class="form-control" type="text" placeholder="Quantity:" aria-label="Search" @bind="Quantity">
+        <input class="form-control" type="text" placeholder="Material Nb:" aria-label="Search" @bind="part">
+    </div>
 </div>
+</div>
+<button class = "btn btn-dark" @onclick="CreateOrder">Create order</button>
 
 
 @code {
     public Order order = new Order();
 
+    int ordernb;
+    int Quantity;
+    string part;
     
     private async Task CreateOrder()
     {
