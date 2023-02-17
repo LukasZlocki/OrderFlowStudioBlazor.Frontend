@@ -1,0 +1,27 @@
+@page "/addorderweb"
+@using OrderFlowStudio.Frontend.Data;
+
+
+<h1>Adding order</h1>
+
+<!-- Add form -->
+<div class="form-inline">
+    <input class="form-control" type="text" placeholder="Order Nb:" aria-label="Search" @bind="order.OrderNumber" >
+    <input class="form-control" type="text" placeholder="Quantity:" aria-label="Search" @bind="order.Quantity" >
+    <input class="form-control" type="text" placeholder="Material Nb:" aria-label="Search" @bind="order.productDto.PartNumber" >
+    <button class = "btn btn-dark" @onclick="CreateOrder">Search</button>
+</div>
+
+
+@code {
+    public Order order = new Order();
+
+    
+    private async Task CreateOrder()
+    {
+        
+    }
+
+
+
+}
