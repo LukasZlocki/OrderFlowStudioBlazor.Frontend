@@ -1,6 +1,8 @@
 @page "/addorderweb"
 @using OrderFlowStudio.Frontend.Data;
 
+@inject HttpClient http;
+
 
 <h1>Adding order</h1>
 
@@ -19,7 +21,7 @@
     
     private async Task CreateOrder()
     {
-        
+        var response = await http.PostJsonAsync<Order>("http://localhost:6001/api/addorder", order);
     }
 
 
