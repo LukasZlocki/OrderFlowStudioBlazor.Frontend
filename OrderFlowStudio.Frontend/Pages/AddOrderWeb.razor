@@ -25,14 +25,23 @@
 
 
 @code {
-    public Order order = new Order();
+    public Order order = new Order() { 
+        productDto = new Product(), 
+        raportDto = new Raport() 
+        };
 
     int ordernb;
     int Quantity;
     string part;
+
     
     private async Task CreateOrder()
     {
+        order.OrderNumber = ordernb;
+        order.Quantity = Quantity;
+        order.productDto.PartNumber = part;
+        order.productDto.ProductDescription = "Steering Unit";
+
         var response = await http.PostJsonAsync<Order>("http://localhost:6001/api/addorder", order);
     }
 
