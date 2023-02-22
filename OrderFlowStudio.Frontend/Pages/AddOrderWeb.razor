@@ -15,9 +15,9 @@
         <label>Part number:</label> <br>
     </div>
     <div class="col-sm">
-        <input class="form-control" type="text" placeholder="Order Nb:" aria-label="Search" @bind="ordernb">
-        <input class="form-control" type="text" placeholder="Quantity:" aria-label="Search" @bind="Quantity">
-        <input class="form-control" type="text" placeholder="Material Nb:" aria-label="Search" @bind="part">
+        <input class="form-control" type="text" placeholder="Order Nb:" aria-label="Search" @bind="_orderNb">
+        <input class="form-control" type="text" placeholder="Quantity:" aria-label="Search" @bind="_quantity">
+        <input class="form-control" type="text" placeholder="Material Nb:" aria-label="Search" @bind="_partNb">
     </div>
 </div>
 </div>
@@ -25,26 +25,21 @@
 
 
 @code {
-    public Order order = new Order() { 
-        productDto = new Product(), 
-        raportDto = new Raport() 
-        };
 
-    int ordernb;
-    int Quantity;
-    string part;
-
-    
+    int _orderNb;
+    int _quantity;
+    string _partNb;
+  
     private async Task CreateOrder()
     {
-        order.OrderNumber = ordernb;
-        order.Quantity = Quantity;
-        order.productDto.PartNumber = part;
-        order.productDto.ProductDescription = "Steering Unit";
-
-        var response = await http.PostJsonAsync<Order>("http://localhost:6001/api/addorder", order);
+        var orderOnCreateDto = new OrderOnCreateDto
+        {
+            OrderNumber = _orderNb,
+            Quantity = _quantity,
+            ProductNumber = _partNb
+        };
+        var response = await http.PostJsonAsync<Order>("http://localhost:6001/api/addorder", orderOnCreateDto);
     }
-
 
 
 }
