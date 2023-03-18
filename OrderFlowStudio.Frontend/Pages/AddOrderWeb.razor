@@ -19,12 +19,34 @@
         <input class="form-control" type="text" placeholder="Quantity:" aria-label="Search" @bind="_quantity">
         <input class="form-control" type="text" placeholder="Material Nb:" aria-label="Search" @bind="_partNb">
     </div>
+    <div class="col-sm">
+        <select class="form-control selectpicker" #bind="Product.Id">
+            <option>--select--</option>
+            @foreach (var item in _productList)
+            {
+                <option value="@item.Id">@item.PartNumber</option>
+            }
+        </select>
+    </div>
 </div>
 </div>
+
 <button class = "btn btn-dark" @onclick="CreateOrder">Create order</button>
 
 
 @code {
+    public List<Product> _productList = new List<Product>(){       
+            new Product {
+                Id = 0,
+                PartNumber = "0000",
+                ProductDescription = "prod0"
+            },
+            new Product {
+                Id = 1,
+                PartNumber = "1111",
+                ProductDescription = "prod1"
+            },
+        };
 
     int _orderNb;
     int _quantity;
@@ -41,5 +63,9 @@
         var response = await http.PostJsonAsync<Order>("http://localhost:6001/api/addorder", orderOnCreateDto);
     }
 
-
+    /*
+    private async Task LoadProducts()
+    {
+    }
+    */
 }
