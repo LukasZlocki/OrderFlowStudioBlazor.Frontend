@@ -16,11 +16,11 @@
         <div class="col-sm">
             <input class="form-control" type="text" placeholder="Quantity:" aria-label="Search" @bind="_orderNb">
             <input class="form-control" type="text" placeholder="Quantity:" aria-label="Search" @bind="_quantity">
-            <select class="form-control selectpicker" @bind="_product.Id">
+            <select class="form-control selectpicker" asp-items @bind="_product.PartNumber">
                 <option>--select--</option>
                 @foreach (var item in productsList)
                 {
-                    <option value="@item.Id">@item.PartNumber</option>
+                    <option value="@item.PartNumber">@item.PartNumber</option>
                 }
             </select>  
         </div>
@@ -30,31 +30,12 @@
 <button class = "btn btn-dark" @onclick="CreateOrder">Create order</button>
 
 @code {
-
     int _orderNb;
     int _quantity;
     Product _product = new Product();
 
     public List<Product> productsList = new List<Product>(); 
 
-
-
-    /*    
-    public List<Prod> _productList = new List<Prod>(){       
-            new Prod {
-                Id = 0,
-                PartNumber = "0000",
-                ProductDescription = "prod0"
-            },
-            new Prod {
-                Id = 1,
-                PartNumber = "1111",
-                ProductDescription = "prod1"
-            },
-        };
-    */
-
-  
     private async Task CreateOrder()
     {
         var orderOnCreateDto = new OrderOnCreateDto
@@ -66,9 +47,9 @@
         var response = await http.PostJsonAsync<Order>("http://localhost:6001/api/addorder", orderOnCreateDto);
     }
 
+    // load data with list of product numbers to put it in picking list
     protected override async Task OnInitializedAsync()
     {
         productsList = await http.GetJsonAsync<List<Product>>("http://localhost:6001/api/product");
     }
- 
 }
