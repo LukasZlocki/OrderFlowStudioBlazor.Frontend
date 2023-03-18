@@ -20,19 +20,19 @@
         <input class="form-control" type="text" placeholder="Material Nb:" aria-label="Search" @bind="_partNb">
     </div>
     <div class="col-sm">
+        <input class="class="form-control" type="text" placeholder="Order Nb:" aria-label="testIt">
         <select class="form-control selectpicker" #bind="Product.Id">
             <option>--select--</option>
             @foreach (var item in _productList)
             {
                 <option value="@item.Id">@item.PartNumber</option>
             }
-        </select>
+        </select>  
     </div>
 </div>
 </div>
 
 <button class = "btn btn-dark" @onclick="CreateOrder">Create order</button>
-
 
 @code {
     public List<Product> _productList = new List<Product>(){       
