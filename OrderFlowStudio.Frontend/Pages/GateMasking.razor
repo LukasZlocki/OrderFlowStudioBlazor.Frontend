@@ -1,0 +1,25 @@
+@page "/gatemasking"
+@using OrderFlowStudio.Frontend.Data;
+
+<!-- 
+    ToDo: 
+    - list all order with status '15' (not started)
+    - add button that change status to masking
+    - update order status in database 
+-->
+
+<h1></h1>
+
+
+
+
+@code {
+    List<Order> OrdersForMaskingList = new List<Order>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // ToDo: load orders registered at area but without status masking in progress
+        // OrdersForMaskingList = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order/");
+    }
+}
