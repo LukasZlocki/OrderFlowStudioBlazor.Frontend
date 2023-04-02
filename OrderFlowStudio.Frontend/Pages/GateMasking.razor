@@ -20,29 +20,32 @@
             <th>Description</th>
             <th>Action</th>
         </tr>
-    <tbody>
-        @foreach(var order in @OrdersForMaskingList) {
-            <td>@order.OrderNumber</td>
-            <td>@order.Quantity</td>
-            <td>@order.productDto.PartNumber</td>
-            <td>@order.productDto.ProductDescription</td>
-            <td><button class="btn btn-secondary">Masking</button></td>
-            
-        }
-    </tbody>
-
+        <tbody>
+            @foreach(var order in @OrdersForMaskingList) {
+                <tr>
+                <td>@order.OrderNumber</td>
+                <td>@order.Quantity</td>
+                <td>@order.ProductDto.PartNumber</td>
+                <td>@order.ProductDto.ProductDescription</td>
+                <td><button class="btn btn-secondary">Start Masking</button></td>    
+                </tr> 
+            }
+        </tbody>
     </table>
-
 </div>
+
+<h1>Masking in progress:</h1>
 
 
 
 @code {
-    List<Order> OrdersForMaskingList = new List<Order>();
+    List<OrderReadDto> OrdersForMaskingList = new List<OrderReadDto>();
+    List<OrderReadDto> OrdersMaskingInProgressList = new List<OrderReadDto>();
 
     protected override async Task OnInitializedAsync()
     {
         // ToDo: load orders registered at area but without status masking in progress
-        OrdersForMaskingList = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order/maskingmodule");
+        OrdersForMaskingList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/maskingarea");
+        //OrdersMaskingInProgressList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/xxx");
     }
 }
