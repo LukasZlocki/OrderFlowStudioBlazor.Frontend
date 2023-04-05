@@ -1,0 +1,81 @@
+@page "/gatemasking"
+@using OrderFlowStudio.Frontend.Data;
+@inject HttpClient http;
+
+<!-- 
+    ToDo: 
+    - list all order with status '15' (not started) <- done 
+    - add button that change status to masking
+    - update order status in database 
+-->
+
+<h1>Select order to work on:</h1>
+
+<div class="border-bottom border-white shadow rounded-lg" style="backgoround-color: #ededed">
+    <table class="table table-striped boarder table-hover">
+        <tr>
+            <th>Order nb</th>
+            <th>Quantity</th>
+            <th>Part nb</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        <tbody>
+            @foreach(var order in @OrdersForMaskingList) {
+                <tr>
+                <td>@order.OrderNumber</td>
+                <td>@order.Quantity</td>
+                <td>@order.ProductDto.PartNumber</td>
+                <td>@order.ProductDto.ProductDescription</td>
+                <td><button class="btn btn-secondary" @onclick="@(() => UpdateOrderWithMaskingInProgressStatus(order.Id))">Start Masking</button></td>    
+                </tr> 
+            }
+        </tbody>
+    </table>
+</div>
+
+<br>
+<br>
+<h1>Masking in progress:</h1>
+
+<div class="border-bottom border-white shadow rounded-lg" style="backgoround-color: #ededed">
+    <table class="table table-striped boarder table-hover">
+        <tr>
+            <th>Order nb</th>
+            <th>Quantity</th>
+            <th>Part nb</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        <tbody>
+            @foreach(var order in @OrdersMaskingInProgressList) {
+                <tr>
+                <td>@order.OrderNumber</td>
+                <td>@order.Quantity</td>
+                <td>@order.ProductDto.PartNumber</td>
+                <td>@order.ProductDto.ProductDescription</td>
+                <td><button class="btn btn-success">Masking in progress</button></td>    
+                </tr> 
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    List<OrderReadDto> OrdersForMaskingList = new List<OrderReadDto>();
+    List<OrderReadDto> OrdersMaskingInProgressList = new List<OrderReadDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // ToDo: load orders registered at area but without status masking in progress
+        OrdersForMaskingList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/maskingareanotstarted");
+        OrdersMaskingInProgressList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/maskingareainprogress");
+    }
+
+    private async Task UpdateOrderWithMaskingInProgressStatus(int orderID) {
+        var orderReadDto = OrdersForMaskingList.Where(id => id.Id == orderID).FirstOrDefault();
+        // Update order in database
+        var serviceResponse = await http.PutJsonAsync<OrderReadDto>("http://localhost:6001/api/order/maskinginprogress", orderReadDto);      
+    }
+}
