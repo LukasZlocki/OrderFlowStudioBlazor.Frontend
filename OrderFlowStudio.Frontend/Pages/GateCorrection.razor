@@ -1,0 +1,51 @@
+﻿@page "/gatecorrection"
+@using OrderFlowStudio.Frontend.Data;
+@inject HttpClient http;
+
+<!--
+    ToDo:
+-->
+
+<h1>Select order with correction finished :</h1>
+
+<div class="border-bottom border-white shadow rounded-lg" style="backgoround-color: #ededed">
+    <table class="table table-striped boarder table-hover">
+        <tr>
+            <th>Order nb</th>
+            <th>Quantity</th>
+            <th>Part nb</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        <tbody>
+            @foreach (var order in @OrdersCorrectionList)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@order.Quantity</td>
+                    <td>@order.ProductDto.PartNumber</td>
+                    <td>@order.ProductDto.ProductDescription</td>
+                    <td><button class="btn btn-secondary" @onclick="@(() => UpdateOrderWithCorrectionFinishedStatus(order.Id))">Corrections done</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    List<OrderReadDto> OrdersCorrectionList = new List<OrderReadDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        OrdersCorrectionList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/correctioninprogress");
+    }
+
+    private async Task UpdateOrderWithCorrectionFinishedStatus(int orderID)
+    {
+        // ToDo : Write status change here
+        //var orderReadDto = OrdersForProcessingList.Where(id => id.Id == orderID).FirstOrDefault();
+        // Update order in database
+        // var serviceResponse = await http.PutJsonAsync<OrderReadDto>("http://localhost:6001/api/order/maskinginprogress", orderReadDto);
+    }
+}
