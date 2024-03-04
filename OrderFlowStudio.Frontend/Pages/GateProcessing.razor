@@ -70,7 +70,7 @@
     {
         // ToDo: load orders registered at area but without status masking in progress
         OrdersForProcessingList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/maskinginprogress");
-        OrdersProcessingInProgressList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/Processinginprogress");
+        OrdersProcessingInProgressList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/processinginprogress");
     }
 
     private async Task UpdateOrderWithProcessingInProgressStatus(int orderID)
