@@ -1,0 +1,83 @@
+﻿@page "/gateprocessing"
+@using OrderFlowStudio.Frontend.Data;
+@inject HttpClient http;
+
+<!--
+    ToDo:
+
+-->
+
+<h1>Select order to work on:</h1>
+
+<div class="border-bottom border-white shadow rounded-lg" style="backgoround-color: #ededed">
+    <table class="table table-striped boarder table-hover">
+        <tr>
+            <th>Order nb</th>
+            <th>Quantity</th>
+            <th>Part nb</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        <tbody>
+            @foreach (var order in @OrdersForProcessingList)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@order.Quantity</td>
+                    <td>@order.ProductDto.PartNumber</td>
+                    <td>@order.ProductDto.ProductDescription</td>
+                    <td><button class="btn btn-secondary" @onclick="@(() => UpdateOrderWithProcessingInProgressStatus(order.Id))">Start Processing</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br>
+<br>
+<h1>Prpcessing in progress:</h1>
+
+<div class="border-bottom border-white shadow rounded-lg" style="backgoround-color: #ededed">
+    <table class="table table-striped boarder table-hover">
+        <tr>
+            <th>Order nb</th>
+            <th>Quantity</th>
+            <th>Part nb</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        <tbody>
+            @foreach (var order in @OrdersProcessingInProgressList)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@order.Quantity</td>
+                    <td>@order.ProductDto.PartNumber</td>
+                    <td>@order.ProductDto.ProductDescription</td>
+                    <td><button class="btn btn-success">Processing in progress</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    List<OrderReadDto> OrdersForProcessingList = new List<OrderReadDto>();
+    List<OrderReadDto> OrdersProcessingInProgressList = new List<OrderReadDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // ToDo: load orders registered at area but without status masking in progress
+        OrdersForProcessingList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/maskinginprogress");
+        OrdersProcessingInProgressList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/Processinginprogress");
+    }
+
+    private async Task UpdateOrderWithProcessingInProgressStatus(int orderID)
+    {
+        // ToDo : Write status change here
+        //var orderReadDto = OrdersForProcessingList.Where(id => id.Id == orderID).FirstOrDefault();
+        // Update order in database
+       // var serviceResponse = await http.PutJsonAsync<OrderReadDto>("http://localhost:6001/api/order/maskinginprogress", orderReadDto);
+    }
+}
