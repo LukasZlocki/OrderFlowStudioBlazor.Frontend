@@ -107,13 +107,13 @@
     [Parameter]
     public int Id {get; set;}
 
-    Raport raport = new Raport();
+    Report raport = new Report();
 
     
 
     protected override async Task OnInitializedAsync()
     {
-       raport = await http.GetJsonAsync<Raport>("http://localhost:6001/api/raport/" + Id);
+       raport = await http.GetJsonAsync<Report>("http://localhost:6001/api/raport/" + Id);
     }
     
 }

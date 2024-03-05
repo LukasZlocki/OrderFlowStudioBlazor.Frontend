@@ -15,10 +15,10 @@
 <h0> Part number    : @order.productDto.PartNumber</h0> <br>
 <h0> Part number    : @order.productDto.ProductDescription</h0> <br>
 }
-@if(order.raportDto != null)
+@if(order.reportDto != null)
 {
-<h0> Order status   : @order.raportDto.statusDto.StatusDescription</h0> <br>
-<h0> Pcs processed  : @order.raportDto.QuantityFinished</h0> <br>
+<h0> Order status   : @order.reportDto.statusDto.StatusDescription</h0> <br>
+<h0> Pcs processed  : @order.reportDto.QuantityFinished</h0> <br>
 }
 
 @code {

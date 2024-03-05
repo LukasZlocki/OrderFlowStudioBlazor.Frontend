@@ -97,11 +97,11 @@
     [Parameter]
     public int RaportId {get; set;}
 
-    Raport raport = new Raport();
+    Report raport = new Report();
 
     private async Task GetRaportByButton()
     {
-        raport = await http.GetJsonAsync<Raport>("http://localhost:6001/api/raport/" + RaportId);
+        raport = await http.GetJsonAsync<Report>("http://localhost:6001/api/raport/" + RaportId);
     }
 
     /*
