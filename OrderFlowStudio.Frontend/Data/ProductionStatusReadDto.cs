@@ -1,8 +1,5 @@
-namespace OrderFlowStudio.Frontend.Data
-{
-    public class ProductionStatus
-    {
-        public int StatusId { get; set; }
+namespace OrderFlowStudio.Frontend.Data {
+    public class ProductionStatusReadDto {
         public int StatusCode { get; set; }
         public string StatusDescription { get; set; }
     }

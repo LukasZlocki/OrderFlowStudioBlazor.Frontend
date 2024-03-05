@@ -1,6 +1,6 @@
 namespace OrderFlowStudio.Frontend.Data
 {
-    public class Raport
+    public class Report
     {
         public int Id { get; set; }
         public int QuantityFinished { get; set; }

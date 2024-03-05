@@ -36,36 +36,36 @@
             <td>@order.productDto.ProductDescription</td>
 
 
-            @if (order.raportDto.statusDto.StatusCode == 10)
+            @if (order.reportDto.statusDto.StatusCode == 20)
             {
                 <td><span class="badge badge-dark">Not in area</span></td>
             }
-            @if (order.raportDto.statusDto.StatusCode == 15)
+            @if (order.reportDto.statusDto.StatusCode == 20)
             {
                 <td><span class="badge badge-dark">Not started</span></td>
             }
 
-            @if (order.raportDto.statusDto.StatusCode == 20)
+            @if (order.reportDto.statusDto.StatusCode == 20)
             {
                 <td><span class="badge badge-primary">Masking</span></td>
             }
-            @if (order.raportDto.statusDto.StatusCode == 30)
+            @if (order.reportDto.statusDto.StatusCode == 30)
             {
                 <td><span class="badge badge-primary">Processing</span></td>
             }
-            @if (order.raportDto.statusDto.StatusCode == 40)
+            @if (order.reportDto.statusDto.StatusCode == 40)
             {
                 <td><span class="badge badge-danger">Correction</span></td>
             }
-            @if (order.raportDto.statusDto.StatusCode == 50)
+            @if (order.reportDto.statusDto.StatusCode == 50)
             {
                 <td><span class="badge badge-danger">Correction finished</span></td>
             }
-            @if (order.raportDto.statusDto.StatusCode == 60)
+            @if (order.reportDto.statusDto.StatusCode == 60)
             {
                 <td><span class="badge badge-success">Almost done</span></td>
             }
-            @if (order.raportDto.statusDto.StatusCode == 70)
+            @if (order.reportDto.statusDto.StatusCode == 70)
             {
                 <td><span class="badge badge-success">Finished</span></td>
             }
@@ -98,7 +98,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order/");
+        orders = await http.GetJsonAsync<List<Order>>("http://localhost:6001/api/order");
     }
 
     private async Task GetOrderIdByOrderNb()
