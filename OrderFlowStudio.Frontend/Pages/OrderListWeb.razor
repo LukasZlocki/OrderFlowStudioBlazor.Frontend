@@ -36,15 +36,10 @@
             <td>@order.productDto.ProductDescription</td>
 
 
-            @if (order.reportDto.statusDto.StatusCode == 20)
+            @if (order.reportDto.statusDto.StatusCode == 10)
             {
                 <td><span class="badge badge-dark">Not in area</span></td>
             }
-            @if (order.reportDto.statusDto.StatusCode == 20)
-            {
-                <td><span class="badge badge-dark">Not started</span></td>
-            }
-
             @if (order.reportDto.statusDto.StatusCode == 20)
             {
                 <td><span class="badge badge-primary">Masking</span></td>
@@ -59,18 +54,13 @@
             }
             @if (order.reportDto.statusDto.StatusCode == 50)
             {
-                <td><span class="badge badge-danger">Correction finished</span></td>
-            }
-            @if (order.reportDto.statusDto.StatusCode == 60)
-            {
-                <td><span class="badge badge-success">Almost done</span></td>
+                <td><span class="badge badge-primary">Packing</span></td>
             }
             @if (order.reportDto.statusDto.StatusCode == 70)
             {
                 <td><span class="badge badge-success">Finished</span></td>
-            }
-                
-            <td><button class="btn btn-dark" @onclick="@(() => RedirectToWebWithRaport(order.Id))">Details</button></td>
+            }          
+            <td><button class="btn btn-info" @onclick="@(() => RedirectToWebWithRaport(order.Id))">Details</button></td>
         </tr>
         }
     </tbody>
