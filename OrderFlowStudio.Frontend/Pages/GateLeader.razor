@@ -1,6 +1,7 @@
 @page "/gateleader"
 @using OrderFlowStudio.Frontend.Data;
 @inject HttpClient http;
+@inject NavigationManager Navigate;
 
 <h1>Registering order at area</h1>
 
@@ -44,6 +45,12 @@
             ProductNumber = _product.PartNumber
         };
         var response = await http.PostJsonAsync<Order>("http://localhost:6001/api/addorder", orderOnCreateDto);
+        GoToMainPage();
+    }
+
+    private void GoToMainPage()
+    {
+        Navigate.NavigateTo("/orderlistweb", true);
     }
 
     // load data with list of product numbers to put it in picking list
@@ -51,4 +58,6 @@
     {
         productsList = await http.GetJsonAsync<List<Product>>("http://localhost:6001/api/product");
     }
+
+
 }
