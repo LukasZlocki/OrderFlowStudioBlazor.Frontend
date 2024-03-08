@@ -3,7 +3,7 @@
 @inject HttpClient http;
 @inject NavigationManager Navigate;
 
-<h1>Registering order at area</h1>
+<h1>Registering order at area:</h1>
 
 <!-- Add form -->
 <div class="container">
@@ -26,15 +26,43 @@
         </div>
     </div>
 </div>
-
+<br />
 <button class = "btn btn-dark" @onclick="CreateOrder">Create order</button>
+
+<br />
+<br />
+<h1>Registered orders:</h1>
+<div class="border-bottom border-white shadow rounded-lg" style="backgoround-color: #ededed">
+    <table class="table table-striped boarder table-hover">
+        <tr>
+            <th>Order nb</th>
+            <th>Quantity</th>
+            <th>Part nb</th>
+            <th>Description</th>
+        </tr>
+        <tbody>
+            @foreach (var order in @ordersRegisteredList)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@order.Quantity</td>
+                    <td>@order.ProductDto.PartNumber</td>
+                    <td>@order.ProductDto.ProductDescription</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 @code {
     int _orderNb;
     int _quantity;
     Product _product = new Product();
 
-    public List<Product> productsList = new List<Product>(); 
+    List<OrderReadDto> ordersRegisteredList = new List<OrderReadDto>();
+
+    List<Product> productsList = new List<Product>(); 
+
 
     private async Task CreateOrder()
     {
@@ -45,18 +73,21 @@
             ProductNumber = _product.PartNumber
         };
         var response = await http.PostJsonAsync<Order>("http://localhost:6001/api/addorder", orderOnCreateDto);
-        GoToMainPage();
+        RefreshThisPage();
     }
 
-    private void GoToMainPage()
+    private void RefreshThisPage()
     {
-        Navigate.NavigateTo("/orderlistweb", true);
+        Navigate.NavigateTo("/gateleader", true);
     }
 
     // load data with list of product numbers to put it in picking list
     protected override async Task OnInitializedAsync()
     {
-        productsList = await http.GetJsonAsync<List<Product>>("http://localhost:6001/api/product");
+       // extract all products
+       productsList = await http.GetJsonAsync<List<Product>>("http://localhost:6001/api/product");
+       // extract registered orders
+       ordersRegisteredList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/registered");
     }
 
 
