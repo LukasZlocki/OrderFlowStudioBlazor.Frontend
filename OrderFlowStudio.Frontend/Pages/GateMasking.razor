@@ -1,5 +1,6 @@
 @page "/gatemasking"
 @using OrderFlowStudio.Frontend.Data;
+@using System.Net.Http.Json
 @inject HttpClient http;
 @inject NavigationManager Navigate;
 
@@ -27,7 +28,7 @@
                 <td>@order.Quantity</td>
                 <td>@order.ProductDto.PartNumber</td>
                 <td>@order.ProductDto.ProductDescription</td>
-                <td><button class="btn btn-secondary" @onclick="@(() => UpdateOrderWithMaskingInProgressStatus(order.Id))">Start Masking</button></td>    
+                <td><button class="btn btn-secondary" @onclick="@(() => UpdateOrderWithMaskingInProgressStatus(order))">Start Masking</button></td>    
                 </tr> 
             }
         </tbody>
@@ -74,10 +75,9 @@
     }
 
     // Update order status - masking in progress
-    private async Task UpdateOrderWithMaskingInProgressStatus(int orderID) {
-        var orderReadDto = OrdersForMaskingList.Where(id => id.Id == orderID).FirstOrDefault();
-        // Update order status in database
-        var serviceResponse = await http.PutJsonAsync<OrderReadDto>("http://localhost:6001/api/order/changestatus/maskinginprogress", orderReadDto);
+    private async Task UpdateOrderWithMaskingInProgressStatus(OrderReadDto order) {
+        var _report = order.ReportDto;
+        var serviceResponse = await http.PatchAsJsonAsync("http://localhost:6001/api/order/changestatusto/maskinginprogress", _report);
         RefreshThisPage();
     }
 
@@ -86,7 +86,7 @@
     {
         var orderReadDto = OrdersForMaskingList.Where(id => id.Id == orderID).FirstOrDefault();
         // Update order status in database
-        var serviceResponse = await http.PutJsonAsync<OrderReadDto>("http://localhost:6001/api/order/changestatus/processingwaiting", orderReadDto);
+        var serviceResponse = await http.PutJsonAsync<OrderReadDto>("http://localhost:6001/api/order/changestatusto/processingwaiting", orderReadDto);
         RefreshThisPage();
     }
 

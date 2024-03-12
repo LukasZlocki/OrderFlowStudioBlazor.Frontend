@@ -4,6 +4,6 @@ namespace OrderFlowStudio.Frontend.Data {
         public int OrderNumber { get; set; } 
         public int Quantity { get; set; }
         public ProductReadDto ProductDto { get; set; }
-        public OrderRaportReadDto RaportDto {get; set;}
+        public OrderReportReadDto ReportDto {get; set;}
     }
 }
