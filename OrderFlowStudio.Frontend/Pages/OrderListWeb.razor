@@ -28,41 +28,56 @@
         </tr> 
     <tbody>
         @foreach (var order in @orders)
-        {
-        <tr>
-            <td>@order.OrderNumber</td>
-            <td>@order.Quantity</td>
-            <td>@order.productDto.PartNumber</td>
-            <td>@order.productDto.ProductDescription</td>
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@order.Quantity</td>
+                    <td>@order.productDto.PartNumber</td>
+                    <td>@order.productDto.ProductDescription</td>
 
-
-            @if (order.reportDto.statusDto.StatusCode == 10)
-            {
-                <td><span class="badge badge-dark">Not started</span></td>
+                    @if (order.reportDto.statusDto.StatusCode == 10)
+                    {
+                        <td><span class="badge badge-dark">Registered</span></td>
+                    }
+                    @if (order.reportDto.statusDto.StatusCode == 20)
+                    {
+                        <td><span class="badge badge-primary">Waiting for masking</span></td>
+                    }
+                    @if (order.reportDto.statusDto.StatusCode == 25)
+                    {
+                        <td><span class="badge badge-warning">Masking in progres</span></td>
+                    }
+                    @if (order.reportDto.statusDto.StatusCode == 30)
+                    {
+                        <td><span class="badge badge-primary">Waiting for processing</span></td>
+                    }
+                    @if (order.reportDto.statusDto.StatusCode == 35)
+                    {
+                        <td><span class="badge badge-warning">Processing in progress</span></td>
+                    }
+                    @if (order.reportDto.statusDto.StatusCode == 40)
+                    {
+                        <td><span class="badge badge-danger">Waiting for correction</span></td>
+                    }
+                    @if (order.reportDto.statusDto.StatusCode == 45)
+                    {
+                        <td><span class="badge badge-danger">Correction in progres</span></td>
+                    }
+                    @if (order.reportDto.statusDto.StatusCode == 50)
+                    {
+                        <td><span class="badge badge-primary">Waiting for packing</span></td>
+                    }
+                    @if (order.reportDto.statusDto.StatusCode == 55)
+                    {
+                        <td><span class="badge badge-warning">Packing in progress</span></td>
+                    }
+                    @if (order.reportDto.statusDto.StatusCode == 60)
+                    {
+                        <td><span class="badge badge-success">Finished</span></td>
+                    }
+                    <td><button class="btn btn-info" @onclick="@(() => RedirectToWebWithRaport(order.Id))">Details</button></td>
+                </tr>
             }
-            @if (order.reportDto.statusDto.StatusCode == 20)
-            {
-                <td><span class="badge badge-primary">Masking</span></td>
-            }
-            @if (order.reportDto.statusDto.StatusCode == 30)
-            {
-                <td><span class="badge badge-primary">Processing</span></td>
-            }
-            @if (order.reportDto.statusDto.StatusCode == 40)
-            {
-                <td><span class="badge badge-danger">Correction</span></td>
-            }
-            @if (order.reportDto.statusDto.StatusCode == 50)
-            {
-                <td><span class="badge badge-primary">Packing</span></td>
-            }
-            @if (order.reportDto.statusDto.StatusCode == 70)
-            {
-                <td><span class="badge badge-success">Finished</span></td>
-            }          
-            <td><button class="btn btn-info" @onclick="@(() => RedirectToWebWithRaport(order.Id))">Details</button></td>
-        </tr>
-        }
     </tbody>
 </table>
 </div>
