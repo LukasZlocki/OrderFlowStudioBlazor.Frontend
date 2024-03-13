@@ -50,7 +50,7 @@
                     <td>@order.Quantity</td>
                     <td>@order.ProductDto.PartNumber</td>
                     <td>@order.ProductDto.ProductDescription</td>
-                    <td><button class="btn btn-warning" @onclick="@(() => UpdateOrderWithWaitingForPackingStatus(order))">Masking finished</button></td>
+                    <td><button class="btn btn-warning" @onclick="@(() => UpdateOrderWithWaitingForPackingStatus(order))">Processing finished</button></td>
                 </tr>
             }
         </tbody>
