@@ -54,7 +54,7 @@
                 <td>@order.Quantity</td>
                 <td>@order.ProductDto.PartNumber</td>
                 <td>@order.ProductDto.ProductDescription</td>
-                <td><button class="btn btn-warning">Masking finished</button></td>    
+                    <td><button class="btn btn-warning" @onclick="@(() => UpdateOrderWithWaitingForProcessingStatus(order))">Masking finished</button></td>
                 </tr> 
             }
         </tbody>
@@ -82,7 +82,7 @@
     }
 
     // Update order status - masking finished = waiting for processing
-    private async Task UpdateOrderWithWaitingForProcessing(OrderReadDto order)
+    private async Task UpdateOrderWithWaitingForProcessingStatus(OrderReadDto order)
     {
         var _report = order.ReportDto;
         var serviceResponse = await http.PatchAsJsonAsync("http://localhost:6001/api/order/changestatusto/processingwaiting", _report);
