@@ -65,16 +65,24 @@
     protected override async Task OnInitializedAsync()
     {
         // load orders registered at area
-        OrdersForProcessingList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/registered");
-        // load orders with status masking in progress
-        OrdersProcessingInProgressList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/maskinginprogress");
+        OrdersForProcessingList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/processingwaiting");
+        // load orders with status processing in progress
+        OrdersProcessingInProgressList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/processingprogress");
     }
 
-    // Update order status - masking in progress
+    // Update order status - processing in progress
     private async Task UpdateOrderWithProcessingInProgressStatus(OrderReadDto order)
     {
         var _report = order.ReportDto;
         var serviceResponse = await http.PatchAsJsonAsync("http://localhost:6001/api/order/changestatusto/processinginprogress", _report);
+        RefreshThisPage();
+    }
+
+    // Update order status - processing finished - correction needed - waiting for correction.
+    private async Task UpdateOrderWithWaitingForCorrectionStatus(OrderReadDto order)
+    {
+        var _report = order.ReportDto;
+        var serviceResponse = await http.PatchAsJsonAsync("http://localhost:6001/api/order/changestatusto/correctionwaiting", _report);
         RefreshThisPage();
     }
 
