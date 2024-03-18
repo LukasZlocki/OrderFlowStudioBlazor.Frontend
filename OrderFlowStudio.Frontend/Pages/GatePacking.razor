@@ -1,13 +1,11 @@
 ﻿@page "/gatepacking"
 @using OrderFlowStudio.Frontend.Data;
+@using System.Net.Http.Json
 @inject HttpClient http;
+@inject NavigationManager Navigate;
 
-<!--
-    ToDo:
--->
 
 <h1>Select order to work on:</h1>
-
 <div class="border-bottom border-white shadow rounded-lg" style="backgoround-color: #ededed">
     <table class="table table-striped boarder table-hover">
         <tr>
@@ -18,38 +16,14 @@
             <th>Action</th>
         </tr>
         <tbody>
-            @foreach (var order in @OrdersForProcessingList)
+            @foreach (var order in OrdersForPackingList)
             {
                 <tr>
                     <td>@order.OrderNumber</td>
                     <td>@order.Quantity</td>
                     <td>@order.ProductDto.PartNumber</td>
                     <td>@order.ProductDto.ProductDescription</td>
-                    <td><button class="btn btn-secondary" @onclick="@(() => UpdateOrderWithPackingInProgressStatus(order.Id))">Start Packing</button></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div class="border-bottom border-white shadow rounded-lg" style="backgoround-color: #ededed">
-    <table class="table table-striped boarder table-hover">
-        <tr>
-            <th>Order nb</th>
-            <th>Quantity</th>
-            <th>Part nb</th>
-            <th>Description</th>
-            <th>Action</th>
-        </tr>
-        <tbody>
-            @foreach (var order in @OrdersForCorrectionList)
-            {
-                <tr>
-                    <td>@order.OrderNumber</td>
-                    <td>@order.Quantity</td>
-                    <td>@order.ProductDto.PartNumber</td>
-                    <td>@order.ProductDto.ProductDescription</td>
-                    <td><button class="btn btn-secondary" @onclick="@(() => UpdateOrderWithPackingInProgressStatus(order.Id))">Start Packing</button></td>
+                    <td><button class="btn btn-secondary" @onclick="@(() => UpdateOrderWithPackingInProgressStatus(order))">Start Packing</button></td>
                 </tr>
             }
         </tbody>
@@ -59,7 +33,6 @@
 <br>
 <br>
 <h1>Packing in progress:</h1>
-
 <div class="border-bottom border-white shadow rounded-lg" style="backgoround-color: #ededed">
     <table class="table table-striped boarder table-hover">
         <tr>
@@ -70,14 +43,14 @@
             <th>Action</th>
         </tr>
         <tbody>
-            @foreach (var order in @OrdersPackingInProgressList)
+            @foreach (var order in OrdersPackingInProgressList)
             {
                 <tr>
                     <td>@order.OrderNumber</td>
                     <td>@order.Quantity</td>
                     <td>@order.ProductDto.PartNumber</td>
                     <td>@order.ProductDto.ProductDescription</td>
-                    <td><button class="btn btn-success">Masking in progress</button></td>
+                    <td><button class="btn btn-warning" @onclick="@(() => UpdateOrderWithFinshedStatus(order))">Finish Order</button></td>
                 </tr>
             }
         </tbody>
@@ -86,25 +59,35 @@
 
 
 @code {
-    List<OrderReadDto> OrdersForProcessingList = new List<OrderReadDto>();
-    List<OrderReadDto> OrdersForCorrectionList = new List<OrderReadDto>();
+    List<OrderReadDto> OrdersForPackingList = new List<OrderReadDto>();
     List<OrderReadDto> OrdersPackingInProgressList = new List<OrderReadDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        // ToDo: load orders registered at area but without status masking in progress
-        OrdersForProcessingList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/processinginprogress");
-        OrdersForCorrectionList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/correctioninprogress");
+        // load orders registered at area
+        OrdersForPackingList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/packingwaiting");
+        // load orders with status packing in progress
         OrdersPackingInProgressList = await http.GetJsonAsync<List<OrderReadDto>>("http://localhost:6001/api/order/packinginprogress");
     }
 
-    private async Task UpdateOrderWithPackingInProgressStatus(int orderID)
+    // Update order status - packing in progress
+    private async Task UpdateOrderWithPackingInProgressStatus(OrderReadDto order)
     {
-        /*
-        // ToDo : Code changing status to packing in progress
-        var orderReadDto = OrdersForProcessingList.Where(id => id.Id == orderID).FirstOrDefault();
-        // Update order in database
-        var serviceResponse = await http.PutJsonAsync<OrderReadDto>("http://localhost:6001/api/order/maskinginprogress", orderReadDto);
-        */
+        var _report = order.ReportDto;
+        var serviceResponse = await http.PatchAsJsonAsync("http://localhost:6001/api/order/changestatusto/packinginprogress", _report);
+        RefreshThisPage();
+    }
+
+    // Update order status - order finished
+    private async Task UpdateOrderWithFinshedStatus(OrderReadDto order)
+    {
+        var _report = order.ReportDto;
+        var serviceResponse = await http.PatchAsJsonAsync("http://localhost:6001/api/order/changestatusto/orderfinished", _report);
+        RefreshThisPage();
+    }
+
+    private void RefreshThisPage()
+    {
+        Navigate.NavigateTo("/gatepacking", true);
     }
 }
