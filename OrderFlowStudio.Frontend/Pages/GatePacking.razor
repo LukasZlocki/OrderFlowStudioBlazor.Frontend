@@ -74,7 +74,7 @@
     private async Task UpdateOrderWithPackingInProgressStatus(OrderReadDto order)
     {
         var _report = order.ReportDto;
-        var serviceResponse = await http.PatchAsJsonAsync("http://localhost:6001/api/order/changestatusto/packinginginprogress", _report);
+        var serviceResponse = await http.PatchAsJsonAsync("http://localhost:6001/api/order/changestatusto/packinginprogress", _report);
         RefreshThisPage();
     }
 
