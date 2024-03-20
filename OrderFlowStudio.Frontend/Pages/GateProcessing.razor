@@ -52,7 +52,7 @@
                     <td>@order.ProductDto.ProductDescription</td>
                     <td>
                         <button class="btn btn-warning" @onclick="@(() => UpdateOrderWithWaitingForPackingStatus(order))">Processing finished</button>
-                        <button class="btn btn-danger" @onclick="@(() => UpdateOrderWithWaitingForCorrectionStatus(order))">Correction needed</button>
+                       <button class="btn btn-danger" @onclick="@(() => UpdateOrderWithWaitingForCorrectionStatus(order))">Correction needed</button>
                      </td>
 
                 </tr>
