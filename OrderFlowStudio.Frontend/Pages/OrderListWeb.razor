@@ -15,6 +15,7 @@
     <button class = "btn btn-dark" @onclick="GetOrderIdByOrderNb">Search</button>
 </div>
 
+<br />
 
 <div  class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
 <table class="table table-striped border table-hover">   
@@ -109,7 +110,7 @@
     private async Task GetOrderIdByOrderNb()
     {
         orderRaportId = await http.GetJsonAsync<int>("http://localhost:6001/api/order/byordernumber/" + orderNb);
-        Navigate.NavigateTo("/orderstatus/" + orderRaportId, true);
+        Navigate.NavigateTo("/fullstatus/" + orderRaportId, true);
     }
 
 
